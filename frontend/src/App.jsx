@@ -165,10 +165,13 @@ const res = await axios.post('http://localhost:8080/api/ai/analyze', {        qu
           <div style={{ display: 'flex', gap: '8px',
                         marginBottom: '12px', flexWrap: 'wrap' }}>
             {[
-              'Which deals are at risk?',
-              'What should I focus on this week?',
-              'Summarize my pipeline',
-            ].map(q => (
+  'Which deals are at risk?',
+  'What should I focus on this week?',
+  'Summarize my pipeline',
+  'Draft a follow-up email for Acme',
+  'Which deal should I prioritize?',
+  'What is my pipeline forecast?',
+].map(q => (
               <button
                 key={q}
                 onClick={() => setAiQuestion(q)}
@@ -223,6 +226,110 @@ const res = await axios.post('http://localhost:8080/api/ai/analyze', {        qu
             </div>
           )}
         </div>
+        {/* Metrics Dashboard */}
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: '16px',
+  marginBottom: '24px'
+}}>
+
+  {/* Total Pipeline Value */}
+  <div style={{
+    backgroundColor: 'white',
+    border: '1px solid #e5e7eb',
+    borderRadius: '12px',
+    padding: '20px'
+  }}>
+    <p style={{ margin: '0 0 8px 0', fontSize: '12px',
+                color: '#6b7280', fontWeight: '500' }}>
+      TOTAL PIPELINE
+    </p>
+    <p style={{ margin: '0', fontSize: '28px',
+                fontWeight: '700', color: '#2563eb' }}>
+      ${(totalPipeline + closedWon).toLocaleString()}
+    </p>
+    <p style={{ margin: '4px 0 0 0', fontSize: '12px',
+                color: '#6b7280' }}>
+      across {opportunities.length} deals
+    </p>
+  </div>
+
+  {/* Win Rate */}
+  <div style={{
+    backgroundColor: 'white',
+    border: '1px solid #e5e7eb',
+    borderRadius: '12px',
+    padding: '20px'
+  }}>
+    <p style={{ margin: '0 0 8px 0', fontSize: '12px',
+                color: '#6b7280', fontWeight: '500' }}>
+      WIN RATE
+    </p>
+    <p style={{ margin: '0', fontSize: '28px',
+                fontWeight: '700', color: '#16a34a' }}>
+      {opportunities.length > 0
+        ? Math.round((opportunities.filter(o =>
+            o.stage === 'Closed Won').length /
+            opportunities.length) * 100)
+        : 0}%
+    </p>
+    <p style={{ margin: '4px 0 0 0', fontSize: '12px',
+                color: '#6b7280' }}>
+      {opportunities.filter(o =>
+        o.stage === 'Closed Won').length} won of {opportunities.length}
+    </p>
+  </div>
+
+  {/* Average Deal Size */}
+  <div style={{
+    backgroundColor: 'white',
+    border: '1px solid #e5e7eb',
+    borderRadius: '12px',
+    padding: '20px'
+  }}>
+    <p style={{ margin: '0 0 8px 0', fontSize: '12px',
+                color: '#6b7280', fontWeight: '500' }}>
+      AVG DEAL SIZE
+    </p>
+    <p style={{ margin: '0', fontSize: '28px',
+                fontWeight: '700', color: '#7c3aed' }}>
+      ${opportunities.length > 0
+        ? Math.round(opportunities.reduce((sum, o) =>
+            sum + (o.amount || 0), 0) /
+            opportunities.length).toLocaleString()
+        : 0}
+    </p>
+    <p style={{ margin: '4px 0 0 0', fontSize: '12px',
+                color: '#6b7280' }}>
+      average across all deals
+    </p>
+  </div>
+
+  {/* Pipeline Velocity */}
+  <div style={{
+    backgroundColor: 'white',
+    border: '1px solid #e5e7eb',
+    borderRadius: '12px',
+    padding: '20px'
+  }}>
+    <p style={{ margin: '0 0 8px 0', fontSize: '12px',
+                color: '#6b7280', fontWeight: '500' }}>
+      HIGH PRIORITY
+    </p>
+    <p style={{ margin: '0', fontSize: '28px',
+                fontWeight: '700', color: '#dc2626' }}>
+      {opportunities.filter(o =>
+        o.probability >= 70 &&
+        o.stage !== 'Closed Won').length}
+    </p>
+    <p style={{ margin: '4px 0 0 0', fontSize: '12px',
+                color: '#6b7280' }}>
+      deals above 70% probability
+    </p>
+  </div>
+
+</div>
 
         {/* Kanban Board */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)',
