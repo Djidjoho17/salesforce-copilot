@@ -8,8 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/opportunities")
-@CrossOrigin(origins = "http://localhost:5173")
-public class OpportunityController {
+@CrossOrigin(origins = "*")public class OpportunityController {
 
     @Autowired
     private OpportunityRepository opportunityRepository;

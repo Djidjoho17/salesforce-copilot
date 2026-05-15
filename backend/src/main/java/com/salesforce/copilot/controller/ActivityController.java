@@ -8,8 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/activities")
-@CrossOrigin(origins = "http://localhost:5173")
-public class ActivityController {
+@CrossOrigin(origins = "*")public class ActivityController {
 
     @Autowired
     private ActivityRepository activityRepository;
