@@ -1,4 +1,7 @@
 # 🤖 AI Sales Intelligence Copilot
+## 📸 Screenshot
+
+![AI Sales Intelligence Copilot](assets/screenshot.png)
 
 An AI-powered CRM pipeline management tool inspired by Salesforce Einstein. 
 Built with Java Spring Boot, React, PostgreSQL, and Claude AI.
